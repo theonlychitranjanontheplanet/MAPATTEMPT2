@@ -61,11 +61,6 @@ const neighborIndices = Array.from(delaunay.neighbors(1));
     .attr("fill", (val, index) => color(index/2**13))
     .attr("stroke", "black");
 */
-
-
-
-
-
   //HAS THE ARRAY OF CELLS THAT ARE CHOSEN TO BE THE TIPPY TOP OF MOUNTAINS! :D
 const getRandomCellIndices = (() => {
   const maxIndex = Math.pow(2, 13) - 1; // 8191
@@ -178,8 +173,6 @@ optionals:
 - set translate limit
 - put flag 
 - 
-
-
 */
 
 
@@ -254,45 +247,3 @@ setPolygons(42);
   
 
    */
-
-
-
-
-
-
-
-
-
-
-  
-
-/* Optional: Add the Delaunay triangle vertices
-svg.selectAll("circle")
-    .data(sites)
-    .join("circle")
-    .attr("cx", d => d[0])
-    .attr("cy", d => d[1])
-    .attr("r", 2)
-    .attr("fill", "black"); */
-
-
-/*
-
-
-So you use voranoi...
-okaycool. then.. voranoi.
-
-So the random number you pick is the 'index'.
-
-i.e the centroid point index.
-
-Then you can use Array.from(delaunay.neighbors(index)) to get the neighbors.
-
-But now that you've got the index...how do you 'select' the cell? 
-
-I guess you gotta do voranoi.attr(index);
-
-hm. 
-
-
-*/

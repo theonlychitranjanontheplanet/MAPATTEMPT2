@@ -7,7 +7,54 @@
 </head>
 <body>
 
-    <svg></svg>
+    <!--AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
+    <div id="map-container"><svg></svg> </div>
+
+    <!--Start of inventory, chat and magic. God help me.-->
+    <div id="popups">
+        <!--Start of inventory collapsible! :D-->
+        <div id="inventory">
+            <div id="inventory-header">
+                <span>Inventory</span>
+                <span id="inventory-toggle-btn">▼</span>
+            </div>
+
+            <div id="inventory-content"></div>
+
+        </div>
+        <!--End of inventory collapsible D:-->
+
+        <!--Start of magic collapsible! :D-->
+        <div id="magic">
+            <div id="magic-header">
+                <span>Magic</span>
+                <span id="magic-toggle-btn">▼</span>
+            </div>
+
+            <div id="magic-content"></div>
+
+        </div>
+        <!--End of magic collapsible! D:-->
+
+
+        <!--Start of chat collapsible! :D-->
+
+        <div id="chat">
+            <div id="chat-header">
+                <span>Chat</span>
+                <span id="chat-toggle-btn">▼</span>
+            </div>
+
+            <div id="chat-content"></div>
+            <textarea id="userMessage" placeholder="enter a message..."></textarea>
+
+        </div>
+
+        <!--End of chat collapsible! D:-->
+    </div>
+    <!--End of inventory, chat and magic! THANK GOD!!!-->
+
+    <script src="./popups.js"></script>
     <script src="./index.js"></script>
     
 </body>
