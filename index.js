@@ -152,35 +152,8 @@ colorTerrain(getRandomCellIndices, sites, delaunay, voronoi);
 
 
 
+//THIS IS THE MOVEMENT PORTION!! 
 
-
-
-
-
-
-
-//THIS IS THE UI PORTION!! 
-
-/*todo: 
-- zoom DONE ABOVE!!
-- polygon the player is in is should be yellow DONE
-- neighbouring polygons should have yellow edges DONE
-- clicking on the neighbourng polygon should give that polygon the yellow fill.DONE!!
-- travelled polygons should add the centroid in black. DONE!!
-
-optionals:
-
-- set translate limit
-- put flag 
-- 
-*/
-
-
-
-
-//now for the polygons HURRAYY!!
-
-//when called, appends black dots depicting history
 function addVisitedMarker(index) {
   const [x, y] = sites[index];
   

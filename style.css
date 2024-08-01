@@ -65,7 +65,17 @@ svg {
     left: 10px;
 }
 
+#inventory, #magic, #chat {
+    position: absolute;
+    /* Add other styling as needed */
+}
+
+
+
 #inventory-header, #magic-header, #chat-header {
+
+    cursor: move;
+
     background-color: #333;
     color: #fff;
     padding: 10px;
@@ -113,4 +123,14 @@ svg {
 
 .remove-item:hover {
     color: darkred;
+}
+
+
+#toggleAllButton {
+
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    z-index: 1000;
+
 }
