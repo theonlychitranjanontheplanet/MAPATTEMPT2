@@ -7,8 +7,37 @@ const svg = d3.select("svg");
 const width = svg.node().clientWidth;
 const height = svg.node().clientHeight;
 var color = d3.scaleSequential(d3.interpolateSpectral);
+const noOfPoints = 2**13
+
+
+const widthLimit = 0.25;
+const heightLimit = 0.2;
+let noOfMountains = Math.floor(Math.random() * 5) + 2;
+
+let getRandomCellIndices = [];
+
+let sitesCounter=0;
 // stores coordinates of random points
-var sites = d3.range(2**13).map(() => [Math.random() * width, Math.random() * height]);
+var sites = d3.range(noOfPoints).map(() => {
+  
+  let x = Math.random() * width
+  let y = Math.random() * height
+
+  //if goal is not achieved
+  if (noOfMountains>0) {
+    //if current coordinates fall within limit
+    if (width - (width * widthLimit) > x && x > width * widthLimit && height - (height * heightLimit) > y && y > height * heightLimit) {
+      getRandomCellIndices.push(sitesCounter)
+      noOfMountains-=1;
+    }
+
+    sitesCounter+=1;
+  }
+  
+
+  return [x,y];
+
+});
 //let sites = [100,15,99,121,300,690,906,9099];
 // Create a group for all the map elements
 var mapGroup = svg.append("g").attr("class", "map-group");
@@ -62,6 +91,9 @@ const neighborIndices = Array.from(delaunay.neighbors(1));
     .attr("stroke", "black");
 */
   //HAS THE ARRAY OF CELLS THAT ARE CHOSEN TO BE THE TIPPY TOP OF MOUNTAINS! :D
+
+
+/*
 const getRandomCellIndices = (() => {
   const maxIndex = Math.pow(2, 13) - 1; // 8191
   const n = Math.floor(Math.random() * 5) + 2; // Random number between 2 and 6
@@ -73,6 +105,7 @@ const getRandomCellIndices = (() => {
   
   return Array.from(result);
 })();
+*/
 
 
 
@@ -81,6 +114,7 @@ const getRandomCellIndices = (() => {
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!CONVERTS TO MAP!!
 
+let polygonHeight;
 
 function colorTerrain(peakIndices, sites, delaunay, voronoi) {
   const polygons = sites.map((value, index) => ({
@@ -91,7 +125,7 @@ function colorTerrain(peakIndices, sites, delaunay, voronoi) {
   const queue = [];
   const high = 0.96;
   const radius = 0.98; // You can adjust this value
-  const sharpness = 0.6; // randomness. If 0, no randomness. Else, more possibility of extra water UwU
+  const sharpness = 0.4; // randomness. If 0, no randomness. Else, more possibility of extra water UwU
 
   peakIndices.forEach(peakIndex => {
     polygons[peakIndex].high = high;
@@ -100,7 +134,7 @@ function colorTerrain(peakIndices, sites, delaunay, voronoi) {
   });
 
 
-                                   //doesn't work as expected. Makes landmass too "circular" and unnatural
+
   for (let i = 0; i < queue.length /*&& polygons[queue[i]].high > 0.008*/; i++) {
 
     //multply height w/ radius for the selected polygon 
@@ -128,10 +162,13 @@ function colorTerrain(peakIndices, sites, delaunay, voronoi) {
     });
   }
 
+  let waterLevel = 0.1;
 
+  polygons.forEach(d => {
+    if (d.high < waterLevel) d.high = 0;
+  });
 
-
-
+  
   // Re-color the polygons based on new heights
   mapCells.selectAll("path")
     .data(polygons)
@@ -143,11 +180,14 @@ function colorTerrain(peakIndices, sites, delaunay, voronoi) {
   // Clean up 'used' property
   polygons.forEach(polygon => delete polygon.used);
 
+
+  polygonHeight = polygons.map((polygon) => polygon.high);
   return polygons; // Return the updated polygons if needed for further processing
 }
 
 
 colorTerrain(getRandomCellIndices, sites, delaunay, voronoi);
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -163,6 +203,7 @@ function addVisitedMarker(index) {
     .attr("r", 2)
     .attr("fill", "black");
 }
+
 
 
 
@@ -190,6 +231,14 @@ function setPolygons(index) {
 
         addVisitedMarker(index);  //puts black dot on history
         setPolygons(i); // move to clicked cell 
+        
+        let locationData = {
+          current: i,
+          height: polygonHeight[i]
+        }
+        console.log(locationData);
+        sendLocationChange(locationData);
+        
       }
     });
 
@@ -197,7 +246,7 @@ function setPolygons(index) {
 }
 
 
-setPolygons(42);
+setPolygons(0);
 
   /*
 

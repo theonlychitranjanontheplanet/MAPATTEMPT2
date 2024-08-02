@@ -25,6 +25,8 @@ function toggleAllDivs() {
 
 
 //To toggle each div seperately
+
+
 //Inventory!!!!!!!!!!!
 //Select the inventory header. And on the 
 const inventoryHeader = d3.select("#inventory").select("#inventory-header").on("click", toggleInventory);
@@ -58,7 +60,8 @@ function toggleInventory() {
     d3.select("#inventory-toggle-btn").text(isMinimized ? "▼" : "▲");
 }
 
-
+//starts off the game with all inventories toggled off..
+toggleInventory();
 
 
 
@@ -82,7 +85,7 @@ function toggleMagic() {
     d3.select("#magic-toggle-btn").text(isMinimized ? "▼" : "▲");
 };
 
-
+toggleMagic();
 
 
 
@@ -118,4 +121,4 @@ function toggleChat() {
     d3.select("#chat-toggle-btn").text(isMinimized ? "▼" : "▲");
 }
 
-
+toggleChat();

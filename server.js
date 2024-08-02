@@ -14,21 +14,25 @@ const app = express();
 app.use(express.json());
 
 
-let importedData=[];
-let dataToExport = [];
+//Don't touch the above stuff unless you rly know what you're doing..
 
-let prompt =[];
 
-//stores the user's reply in the text box + maybe a few other things?
-let clientMessage = "What's your fav word, chatGPT?";
+//stores the client message
+let clientMessage;
 
-let AIReply = {
+//you really don't need...to send anything.
+let AIReply;
 
-  message: "Benis Music"
+let prompt;
+
+
+
+
+let messageToClient = {
+
+  message: "balls"
 
 }
-
-
 
 app.use(express.static(__dirname));
 
@@ -40,10 +44,11 @@ app.get('/', (get, give) => {
 //When client goes to /getFromServer, assume its a get request, give data
 app.get('/getFromServer', async (get, give) => {
 
-  AIReply= await chatGPT();
-  give.json(AIReply);
-});
+  AIReply = await chatGPT("Say 'obamna balls' ONLY!!");
+  messageToClient.message= AIReply.message.content;
+  give.json(messageToClient);
 
+});
 
 
 
@@ -53,10 +58,22 @@ app.post('/giveToServer', (get, give) => {
   //Has the received data :D
 
   clientMessage = get.body;
-  AIReply.message = clientMessage.message;
-  console.log("Given data:", AIReply);
+  console.log("Given data:", clientMessage);
 
   give.json({ message: "Data updated successfully"});
+});
+
+
+
+
+let locationChangeInfo;
+app.post('/locationChange', (get, give) => {
+  //Has the received data :D
+
+  locationChangeInfo = get.body;
+  console.log("Current location data:", locationChangeInfo);
+
+  give.json({ message: "Understood. Player has moved"});
 });
 
 
@@ -76,9 +93,9 @@ app.listen(6969, () => {
 
 
 
-async function chatGPT() {
+async function chatGPT(input) {
   const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: clientMessage.message }],
+    messages: [{ role: "system", content: input }],
     model: "gpt-4o-mini", // or "gpt-4" if you have access to it
   });
 
