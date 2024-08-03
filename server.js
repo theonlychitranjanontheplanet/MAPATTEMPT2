@@ -44,6 +44,10 @@ app.get('/getFromServer', async (get, give) => {
   //testing.message= AIReply.message.content;
   give.json(testing);
 
+  Memory.setChat(locationInfo.current, testing.message);
+  console.log(Memory.getChat(locationInfo.current));
+
+
 });
 
 
@@ -55,7 +59,13 @@ app.post('/giveToServer', (get, give) => {
   let clientMessage = get.body;
   console.log("Given data:", clientMessage);
 
+
+  Memory.setChat(locationInfo.current, clientMessage.message);
+
+  console.log(Memory.getChat(locationInfo.current));
+
   give.json({ message: "Data updated successfully"});
+
 });
 
 
@@ -69,8 +79,6 @@ let locationInfo;
 let pastInfo;
 app.post('/locationChange', async (get, give) => {
   //Has the received data :D
-
-
 
   //MOVEMENT!!!!!!!!!!!!!!!!!
   pastInfo = locationInfo;
@@ -117,7 +125,7 @@ app.post('/locationChange', async (get, give) => {
     }
   }
 
-  console.log("Current lore: " + Memory.getCHLore(locationInfo.current))
+  console.log("Current lore: " + Memory.getCHLore(locationInfo.current));
 
   //MOVEMENT END!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -150,7 +158,10 @@ app.post('/locationChange', async (get, give) => {
 
   //CHAT END!!!!
 
-  give.json({ message: "Understood. Player has moved"});
+  give.json({ 
+    message: "Understood. Player has moved",
+    initData: Memory.getChat(locationInfo.current)[0],
+  });
 
 
 
@@ -164,9 +175,6 @@ app.post('/initData', async (get, give) => {
   locationInfo = get.body;
 
 
-  give.json({ message: "Understood. Init details given."});
-  
-
   const initPrompt = lorePrompt(locationInfo.height);
   //Initial lore sent to environmentLores and hopefully updated..?
 
@@ -177,10 +185,17 @@ app.post('/initData', async (get, give) => {
   //*CHAT OPENING.
 
   let openingMessage = await chatGPT(initialChatMessage(initLore.message.content));
-
   console.log(openingMessage.message.content);
-
   Memory.setChat(0,openingMessage.message.content);
+
+  give.json({ 
+
+    message: "Understood. Init details given.",
+    initData: openingMessage.message.content,
+
+  });
+
+
 
 //*/  
 

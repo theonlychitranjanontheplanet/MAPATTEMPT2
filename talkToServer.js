@@ -61,6 +61,8 @@ async function sendLocationChange(locationData) {
         body: JSON.stringify(locationData),
     })//so now the method is posted to /update OwO
     
+    let result = await serverData.json();
+    addToChat(true, result.initData);
 
 }
 
@@ -80,10 +82,8 @@ async function sendInitData(initData) {
         body: JSON.stringify(initData),
     })//so now the method is posted to /update OwO
 
-
-
-
-
+    let result = await serverData.json();
+    addToChat(true, result.initData);
 
     //.then(response => response.json()).then(result => console.log('Success:', result.message))
     //.catch(error => console.error('Error:', error));
