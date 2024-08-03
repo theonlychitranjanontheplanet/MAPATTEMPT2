@@ -2,7 +2,7 @@ import express from 'express';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import { lorePrompt } from './serverHelpers/loreGPT.mjs';
+import { lorePrompt } from '../serverHelpers/loreGPT.mjs';
 
 import OpenAI from "openai";
 const openai = new OpenAI({

@@ -206,7 +206,6 @@ function addVisitedMarker(index) {
 
 
 
-
 function setPolygons(index) {
   
   // Get the neighbors of the selected cell
@@ -227,45 +226,33 @@ function setPolygons(index) {
     .attr("stroke", "black")
     .attr("pointer-events", "all") // Change this to "all" to enable events
     .on("click", function(event, i) {
+      //To prevent race
       if (i !== index) {
-
+    
         addVisitedMarker(index);  //puts black dot on history
         setPolygons(i); // move to clicked cell 
-        
+    
         let locationData = {
           current: i,
           height: polygonHeight[i]
         }
         console.log(locationData);
         sendLocationChange(locationData);
-        
+    
       }
-    });
+  });
 
 
 }
 
 
 setPolygons(0);
+// Makes sure all scripts are loaded, THEN sends index 0's ddata..
+window.addEventListener('load', function() {
+  let initPolygonData = {
+    current: 0,
+    height: polygonHeight[0],
+  }
+  sendInitData(initPolygonData);
+});
 
-  /*
-
-
-
-  currentPolygon(
-    
-
-  array[CURRENT, neighbor1, neighbor2..]
-  
-  )
-  Make a new group "g" called movementChoices
-
-  movementChoices.selectAll("path")
-  .data(currentPolygon)
-  .attr("d", (val, index) => voronoi.renderCell(index))
-  .attr("fill", d => IF index==CURRENT then "yellow" ELSE "none")
-  .attr("stroke", "yellow");
-
-  
-
-   */
