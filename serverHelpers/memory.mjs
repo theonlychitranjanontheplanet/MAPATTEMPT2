@@ -1,5 +1,7 @@
 let environmentLores = ["Hmm.."];
 
+let lorePolygons = []
+
 function createArrayOfArrays(x) {
     return Array(x).fill().map(() => ({
         lore: -1,
@@ -18,10 +20,23 @@ points to which element in environmentLore is associated with the polygon's (whi
 UNDERSTAND SHUDUP!
 */
 
+export function setLorePolygons(index, polygons) {
+    lorePolygons[index]=polygons;
+
+    console.log(lorePolygons);
+};
+
+
+export function getLorePolygons(index) {
+    return lorePolygons[index];
+};
+
+
 //lore for 0th polygon ie starting polygon :3
 export function loreZero(lore) {
     environmentLores[0] = lore;
     chatHistory[0].lore=0;
+    lorePolygons[0]=[0];
     return chatHistory;
 };
 

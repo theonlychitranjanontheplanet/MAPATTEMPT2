@@ -45,7 +45,7 @@ app.get('/getFromServer', async (get, give) => {
   give.json(testing);
 
   Memory.setChat(locationInfo.current, testing.message);
-  console.log(Memory.getChat(locationInfo.current));
+  //console.log(Memory.getChat(locationInfo.current));
 
 
 });
@@ -57,12 +57,12 @@ app.post('/giveToServer', (get, give) => {
   //Has the received data :D
 
   let clientMessage = get.body;
-  console.log("Given data:", clientMessage);
+  //console.log("Given data:", clientMessage);
 
 
   Memory.setChat(locationInfo.current, clientMessage.message);
 
-  console.log(Memory.getChat(locationInfo.current));
+  //console.log(Memory.getChat(locationInfo.current));
 
   give.json({ message: "Data updated successfully"});
 
@@ -71,8 +71,9 @@ app.post('/giveToServer', (get, give) => {
 
 
 
-
-
+//TO GET THE CURRENT LORE NUMBER!!! Memory.getCHLore(locationInfo.current)
+//POLYGONS WITH THE SAME LORE NUMBER GET IN AN ARRAAY WITH INDEX OF THE SAME LORE NUMBR TRUST ME :D
+let lorePolygons = [0];
 //whenever client changes location, inform to the server with an object {current: i, height: polygonHeight[i]}
 let samePolygons=0;
 let locationInfo;
@@ -89,7 +90,7 @@ app.post('/locationChange', async (get, give) => {
 
 
 
-
+  //New block
   if(Memory.isCHLoreEmpty(locationInfo.current)) {
     const decay = Math.random();
 
@@ -101,8 +102,15 @@ app.post('/locationChange', async (get, give) => {
 
 
 
-      //new
+      //new block has same lore no as prev. block
       Memory.setCHLore(locationInfo.current, Memory.getCHLore(pastInfo.current));
+      //lorePolygon group gets updated
+      lorePolygons.push(locationInfo.current);
+
+      //okay. The new lore polygons have been set.
+      Memory.setLorePolygons(Memory.getCHLore(locationInfo.current), lorePolygons);
+
+
 
     }
 
@@ -120,12 +128,27 @@ app.post('/locationChange', async (get, give) => {
       const newLore = await chatGPT(initPrompt);
       let newLoreNum = Memory.setLore(newLore.message.content);
       Memory.setCHLore(locationInfo.current, newLoreNum);
-
+      Memory.setLorePolygons(newLoreNum, [locationInfo.current]);
+      lorePolygons=[locationInfo.current];
 
     }
   }
 
-  console.log("Current lore: " + Memory.getCHLore(locationInfo.current));
+  
+
+
+  //old block
+  else {
+
+    let itsLoreNum = Memory.getCHLore(locationInfo.current);
+    lorePolygons = Memory.getLorePolygons(itsLoreNum);
+    console.log(lorePolygons);
+
+  }
+
+  
+
+  //console.log("Current lore: " + Memory.getCHLore(locationInfo.current));
 
   //MOVEMENT END!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -143,14 +166,14 @@ app.post('/locationChange', async (get, give) => {
     
 
     Memory.setChat( locationInfo.current ,openingMessage.message.content);
-    console.log(Memory.getChat(locationInfo.current));
+    //console.log(Memory.getChat(locationInfo.current));
 
   }
 
   //or else, just send the chat array.
   else {
 
-    console.log("Chat history: " + Memory.getChat(locationInfo.current));
+    //console.log("Chat history: " + Memory.getChat(locationInfo.current));
 
   }
 
@@ -172,6 +195,9 @@ app.post('/locationChange', async (get, give) => {
 app.post('/initData', async (get, give) => {
   //Has the received data :D
 
+
+
+
   locationInfo = get.body;
 
 
@@ -185,7 +211,7 @@ app.post('/initData', async (get, give) => {
   //*CHAT OPENING.
 
   let openingMessage = await chatGPT(initialChatMessage(initLore.message.content));
-  console.log(openingMessage.message.content);
+  //console.log(openingMessage.message.content);
   Memory.setChat(0,openingMessage.message.content);
 
   give.json({ 
