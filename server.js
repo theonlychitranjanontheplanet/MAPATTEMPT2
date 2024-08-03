@@ -4,9 +4,10 @@ import { fileURLToPath } from 'url';
 import OpenAI from "openai";
 import { lorePrompt } from './serverHelpers/loreGPT.mjs';
 import * as Memory from './serverHelpers/memory.mjs';
+import { initialChatMessage } from './serverHelpers/narratorGPT.mjs';
 
 const openai = new OpenAI({
-  apiKey: "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" //:3
+  apiKey: "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" 
 });
 
 const __filename = fileURLToPath(import.meta.url);
@@ -120,30 +121,38 @@ app.post('/locationChange', async (get, give) => {
 
   //MOVEMENT END!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  /*
+  
 
   //CHAT!!!!!!
-
+  //*
   //if chat is empty, you should proably use narratorGPT to come up with a solution...
   if (Memory.isChatEmpty(locationInfo.current)) {
+
+    let loreLoc = Memory.getCHLore(locationInfo.current);
+    let actualLore = Memory.getLore(loreLoc);
+
+    let openingMessage = await chatGPT(initialChatMessage(actualLore));
+    
+
+    Memory.setChat( locationInfo.current ,openingMessage.message.content);
+    console.log(Memory.getChat(locationInfo.current));
 
   }
 
   //or else, just send the chat array.
   else {
 
+    console.log("Chat history: " + Memory.getChat(locationInfo.current));
 
   }
 
-
+  //*/
 
   //CHAT END!!!!
-*/
+
   give.json({ message: "Understood. Player has moved"});
 
 
-
-  
 
 });
 
@@ -156,7 +165,7 @@ app.post('/initData', async (get, give) => {
 
 
   give.json({ message: "Understood. Init details given."});
-  console.log(locationInfo);
+  
 
   const initPrompt = lorePrompt(locationInfo.height);
   //Initial lore sent to environmentLores and hopefully updated..?
@@ -165,14 +174,15 @@ app.post('/initData', async (get, give) => {
   const initLore = await chatGPT(initPrompt);
   Memory.loreZero(initLore.message.content);
 
+  //*CHAT OPENING.
 
+  let openingMessage = await chatGPT(initialChatMessage(initLore.message.content));
 
-  
+  console.log(openingMessage.message.content);
 
+  Memory.setChat(0,openingMessage.message.content);
 
-
-
-  
+//*/  
 
 });
 

@@ -50,7 +50,7 @@ async function sendData() {
 //index.js will take care of locationData :D
 async function sendLocationChange(locationData) {
 
-    fetch('/locationChange', {
+    let serverData = await fetch('/locationChange', {
 
         method: 'POST',
         headers: {
@@ -60,8 +60,7 @@ async function sendLocationChange(locationData) {
         //convrts newData into strings UwU TwT
         body: JSON.stringify(locationData),
     })//so now the method is posted to /update OwO
-    .then(response => response.json()).then(result => console.log('Success:', result.message))
-    .catch(error => console.error('Error:', error));
+    
 
 }
 
@@ -70,7 +69,7 @@ async function sendLocationChange(locationData) {
 //ONLY used for sending init data. for now, only initial location data.
 async function sendInitData(initData) {
 
-    fetch('/initData', {
+    let serverData = await fetch('/initData', {
 
         method: 'POST',
         headers: {
@@ -80,8 +79,14 @@ async function sendInitData(initData) {
         //convrts newData into strings UwU TwT
         body: JSON.stringify(initData),
     })//so now the method is posted to /update OwO
-    .then(response => response.json()).then(result => console.log('Success:', result.message))
-    .catch(error => console.error('Error:', error));
+
+
+
+
+
+
+    //.then(response => response.json()).then(result => console.log('Success:', result.message))
+    //.catch(error => console.error('Error:', error));
 
 }
 
@@ -118,7 +123,7 @@ async function oneRound() {
     //Add AI message into text box
     addToChat(true, serverReply.message);
 
-}
+};
 
 document.getElementById('userMessage').addEventListener('keyup', function(event) {
     if (event.key === 'Enter') {

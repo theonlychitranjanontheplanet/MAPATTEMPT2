@@ -205,6 +205,46 @@ function addVisitedMarker(index) {
 }
 
 
+/*
+function setPolygons(index) {
+  const neighbors = Array.from(delaunay.neighbors(index));
+  const selectedPolygons = [...neighbors, index];
+
+  // Remove old click listeners
+  movementChoices.selectAll("path").on("click", null);
+
+  // Use enter-update-exit pattern
+  const paths = movementChoices.selectAll("path")
+    .data(selectedPolygons, d => d);
+
+  paths.enter()
+    .append("path")
+    .merge(paths)
+    .attr("d", i => voronoi.renderCell(i))
+    .attr("fill", i => i === index ? "black" : "none")
+    .attr("stroke", "black")
+    .attr("pointer-events", "all");
+
+  paths.exit().remove();
+
+  // Use event delegation
+  movementChoices.on("click", function(event) {
+    const clickedPolygon = d3.select(event.target);
+    const i = clickedPolygon.datum();
+    if (i !== undefined && i !== index) {
+      addVisitedMarker(index);
+      setPolygons(i);
+      let locationData = {
+        current: i,
+        height: polygonHeight[i]
+      };
+      console.log(locationData);
+      sendLocationChange(locationData);
+    }
+  });
+}
+*/
+
 
 function setPolygons(index) {
   

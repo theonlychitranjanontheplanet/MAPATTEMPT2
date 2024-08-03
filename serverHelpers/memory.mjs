@@ -1,10 +1,10 @@
 let environmentLores = ["Hmm.."];
 
 function createArrayOfArrays(x) {
-  return Array(x).fill().map(() => ({
-    lore: -1,
-    history: [],
-  }));
+    return Array(x).fill().map(() => ({
+        lore: -1,
+        history: [],
+    }));
 }
 
 let chatHistory = createArrayOfArrays(2**13);
