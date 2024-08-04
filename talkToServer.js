@@ -90,24 +90,6 @@ async function sendInitData(initData) {
 
 }
 
-/*
-async function sendInitData(initData) {
-
-    fetch('/initData', {
-
-        method: 'POST',
-        headers: {
-            //Tells that this is JSON data
-            'Content-Type': 'application/json',
-        },
-        //convrts newData into strings UwU TwT
-        body: JSON.stringify(initData),
-    })//so now the method is posted to /update OwO
-    .then(response => response.json()).then(result => console.log('Success:', result.message))
-    .catch(error => console.error('Error:', error));
-
-}*/
-
 
 
 //1 round of sending stuff to server and server sending stuff back :D
