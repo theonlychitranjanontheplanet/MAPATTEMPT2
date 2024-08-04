@@ -2,9 +2,6 @@ import express from 'express';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import OpenAI from "openai";
-import { lorePrompt } from './serverHelpers/loreGPT.mjs';
-import * as Memory from './serverHelpers/memory.mjs';
-import { initialChatMessage } from './serverHelpers/narratorGPT.mjs';
 
 const openai = new OpenAI({
   apiKey: "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" 
@@ -18,11 +15,6 @@ app.use(express.json());
 
 
 //Don't touch the above stuff unless you rly know what you're doing..
-
-
-
-
-
 
 let testing = {
   message: "balls"
@@ -39,49 +31,25 @@ app.get('/', (get, give) => {
 
 //When client goes to /getFromServer, give data to them
 app.get('/getFromServer', async (get, give) => {
-
-  //let AIReply = await chatGPT("Say 'obamna balls' ONLY!!");
-  //testing.message= AIReply.message.content;
   give.json(testing);
-
-  Memory.setChat(locationInfo.current, testing.message);
-  //console.log(Memory.getChat(locationInfo.current));
-
-
 });
 
 
 
 // When client goes to /giveToServer, get data from them
 app.post('/giveToServer', (get, give) => {
-  //Has the received data :D
-
   let clientMessage = get.body;
-  //console.log("Given data:", clientMessage);
-
-
-  Memory.setChat(locationInfo.current, clientMessage.message);
-
-  //console.log(Memory.getChat(locationInfo.current));
-
   give.json({ message: "Data updated successfully"});
 
 });
 
 
 
-
-//TO GET THE CURRENT LORE NUMBER!!! Memory.getCHLore(locationInfo.current)
-//POLYGONS WITH THE SAME LORE NUMBER GET IN AN ARRAAY WITH INDEX OF THE SAME LORE NUMBR TRUST ME :D
-let lorePolygons = [0];
-//whenever client changes location, inform to the server with an object {current: i, height: polygonHeight[i]}
-let samePolygons=0;
 let locationInfo;
 let pastInfo;
 app.post('/locationChange', async (get, give) => {
-  //Has the received data :D
 
-  //MOVEMENT!!!!!!!!!!!!!!!!!
+
   pastInfo = locationInfo;
   locationInfo = get.body;
 
@@ -89,135 +57,27 @@ app.post('/locationChange', async (get, give) => {
   console.log("Past location: " + pastInfo.current);
 
 
-
-  //New block
-  if(Memory.isCHLoreEmpty(locationInfo.current)) {
-    const decay = Math.random();
-
-    //basically if the past polygon and current polygon was in land/water..yea.
-    if ((samePolygons<3 || decay < 0.7) && (pastInfo.height === locationInfo.height || (pastInfo.height > 0 && locationInfo.height > 0))) {
-
-      samePolygons+=1;
-      console.log("Same biome");
-
-
-
-      //new block has same lore no as prev. block
-      Memory.setCHLore(locationInfo.current, Memory.getCHLore(pastInfo.current));
-      //lorePolygon group gets updated
-      lorePolygons.push(locationInfo.current);
-
-      //okay. The new lore polygons have been set.
-      Memory.setLorePolygons(Memory.getCHLore(locationInfo.current), lorePolygons);
-
-
-
-    }
-
-    else {
-      samePolygons=0;
-      console.log("NEW BIOME!!");
-
-      //should ask chatGPT to make a new lore lol like, variable = chatGPT(proompt);
-      //then push the lore using newLoreNum = Memory.setLore(variable);
-      //then do Memory.setCHLore(locationInfo.current, newLoreNum);
-
-      //new
-      //add the lore
-      const initPrompt = lorePrompt(locationInfo.height);
-      const newLore = await chatGPT(initPrompt);
-      let newLoreNum = Memory.setLore(newLore.message.content);
-      Memory.setCHLore(locationInfo.current, newLoreNum);
-      Memory.setLorePolygons(newLoreNum, [locationInfo.current]);
-      lorePolygons=[locationInfo.current];
-
-    }
-  }
-
-  
-
-
-  //old block
-  else {
-
-    let itsLoreNum = Memory.getCHLore(locationInfo.current);
-    lorePolygons = Memory.getLorePolygons(itsLoreNum);
-    console.log(lorePolygons);
-
-  }
-
-  
-
-  //console.log("Current lore: " + Memory.getCHLore(locationInfo.current));
-
-  //MOVEMENT END!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-  
-
-  //CHAT!!!!!!
-  //*
-  //if chat is empty, you should proably use narratorGPT to come up with a solution...
-  if (Memory.isChatEmpty(locationInfo.current)) {
-
-    let loreLoc = Memory.getCHLore(locationInfo.current);
-    let actualLore = Memory.getLore(loreLoc);
-
-    let openingMessage = await chatGPT(initialChatMessage(actualLore));
-    
-
-    Memory.setChat( locationInfo.current ,openingMessage.message.content);
-    //console.log(Memory.getChat(locationInfo.current));
-
-  }
-
-  //or else, just send the chat array.
-  else {
-
-    //console.log("Chat history: " + Memory.getChat(locationInfo.current));
-
-  }
-
-  //*/
-
-  //CHAT END!!!!
+  //If visited for the first time, tell the fucking narrator GPT to describe the 
 
   give.json({ 
     message: "Understood. Player has moved",
-    initData: Memory.getChat(locationInfo.current)[0],
-  });
+    //Initializing data
+    initData: "Yay D:",
+  });});
 
 
-
-});
-
-
+//for chatGPT .message.content 
 //Gets initial data. For now, only info about polygon 0.
 app.post('/initData', async (get, give) => {
   //Has the received data :D
-
-
-
-
   locationInfo = get.body;
-
-
-  const initPrompt = lorePrompt(locationInfo.height);
-  //Initial lore sent to environmentLores and hopefully updated..?
-
-
-  const initLore = await chatGPT(initPrompt);
-  Memory.loreZero(initLore.message.content);
-
-  //*CHAT OPENING.
-
-  let openingMessage = await chatGPT(initialChatMessage(initLore.message.content));
-  //console.log(openingMessage.message.content);
-  Memory.setChat(0,openingMessage.message.content);
+  
 
   give.json({ 
 
     message: "Understood. Init details given.",
-    initData: openingMessage.message.content,
+    //Initializing data
+    initData: "Welcome to the game you stupid fuck",
 
   });
 

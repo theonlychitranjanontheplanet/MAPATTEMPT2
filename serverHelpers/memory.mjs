@@ -96,3 +96,32 @@ export function loreArray() {
 export function loreLength() {
     return environmentLores.length;
 }
+
+
+
+
+//PLS GOD PLS WORKKK!!!
+
+
+
+export function processLorePolygons(x) {
+    if (x >= lorePolygons.length) {
+        throw new Error("Index out of bounds");
+    }
+
+    const y = lorePolygons[x];
+    let result = "";
+    const transitionPhrase = "User moved to another location in the same biome.";
+
+    for (let i = 0; i < y.length; i++) {
+        // Concatenate the history strings for the current item
+        result += y[i].history.join("");
+
+        // Add the transition phrase after all items except the last one
+        if (i < y.length - 1) {
+            result += transitionPhrase;
+        }
+    }
+
+    return result;
+}
