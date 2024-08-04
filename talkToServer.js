@@ -45,8 +45,6 @@ async function sendData() {
 
 
 
-
-
 //index.js will take care of locationData :D
 async function sendLocationChange(locationData) {
 
@@ -62,6 +60,7 @@ async function sendLocationChange(locationData) {
     })//so now the method is posted to /update OwO
     
     let result = await serverData.json();
+    addToChat(false, "I have decided to leave the place.");
     addToChat(true, result.initData);
 
 }
