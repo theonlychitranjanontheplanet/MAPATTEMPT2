@@ -431,7 +431,8 @@ async function logicGPT() {
   worldRules + "You must decide whether the latest player message is something that "+
   "can be done and reply with 'allowed.' or 'not allowed.' (and give reason why it's not allowed afterwards) or 'You died.' (and give reason why it's not allowed afterwards if the player did someting they were allowed to do but died) ONLY."+
   "The ONLY exception to this are the two magics the player can perform: Fireball: Create a ball of fire. Can shoot it at anything."+
-  "Iceball: Create a ball of ice. Can shoot it at anything. Apart from these two, nothing else is allowed.";
+  "Iceball: Create a ball of ice. Can shoot it at anything. Apart from these two, nothing else is allowed."+
+  "The player is also not allowed to move past the foreground. This is because all movement past the foreground is handled by the UI.";
   
   let messages;
   let formattedMessages = [];
