@@ -1,6 +1,3 @@
-
-
-
 //TAKES CARE OF THE MAP STUFF!!
 
 const svg = d3.select("svg");
@@ -82,35 +79,6 @@ const voronoi = delaunay.voronoi([0, 0, width, height]);
 
 const neighborIndices = Array.from(delaunay.neighbors(1));
 
-// Draw the Voronoi cells
-/*svg.selectAll("path")
-    .data(sites)
-    .join("path")
-    .attr("d", (val, index) => voronoi.renderCell(index)) //d for draw. Draw the damn lines. 
-    .attr("fill", (val, index) => color(index/2**13))
-    .attr("stroke", "black");
-*/
-  //HAS THE ARRAY OF CELLS THAT ARE CHOSEN TO BE THE TIPPY TOP OF MOUNTAINS! :D
-
-
-/*
-const getRandomCellIndices = (() => {
-  const maxIndex = Math.pow(2, 13) - 1; // 8191
-  const n = Math.floor(Math.random() * 5) + 2; // Random number between 2 and 6
-  const result = new Set();
-  
-  while (result.size < n) {
-    result.add(Math.floor(Math.random() * (maxIndex + 1)));
-  }
-  
-  return Array.from(result);
-})();
-*/
-
-
-
-
-
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!CONVERTS TO MAP!!
 
@@ -125,7 +93,7 @@ function colorTerrain(peakIndices, sites, delaunay, voronoi) {
   const queue = [];
   const high = 0.96;
   const radius = 0.98; // You can adjust this value
-  const sharpness = 0.4; // randomness. If 0, no randomness. Else, more possibility of extra water UwU
+  const sharpness = 0.4; // randomness. If 0, no randomness. Else, more possibility of extra water 
 
   peakIndices.forEach(peakIndex => {
     polygons[peakIndex].high = high;
@@ -205,45 +173,6 @@ function addVisitedMarker(index) {
 }
 
 
-/*
-function setPolygons(index) {
-  const neighbors = Array.from(delaunay.neighbors(index));
-  const selectedPolygons = [...neighbors, index];
-
-  // Remove old click listeners
-  movementChoices.selectAll("path").on("click", null);
-
-  // Use enter-update-exit pattern
-  const paths = movementChoices.selectAll("path")
-    .data(selectedPolygons, d => d);
-
-  paths.enter()
-    .append("path")
-    .merge(paths)
-    .attr("d", i => voronoi.renderCell(i))
-    .attr("fill", i => i === index ? "black" : "none")
-    .attr("stroke", "black")
-    .attr("pointer-events", "all");
-
-  paths.exit().remove();
-
-  // Use event delegation
-  movementChoices.on("click", function(event) {
-    const clickedPolygon = d3.select(event.target);
-    const i = clickedPolygon.datum();
-    if (i !== undefined && i !== index) {
-      addVisitedMarker(index);
-      setPolygons(i);
-      let locationData = {
-        current: i,
-        height: polygonHeight[i]
-      };
-      console.log(locationData);
-      sendLocationChange(locationData);
-    }
-  });
-}
-*/
 
 
 function setPolygons(index) {

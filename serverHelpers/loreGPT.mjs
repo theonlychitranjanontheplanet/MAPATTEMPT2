@@ -112,20 +112,20 @@ function getRandomElement(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
   
-function generateBiomeDescription(number) {
-    const biome = number === 0 ? getRandomElement(waterBiomes) : getRandomElement(landBiomes);
+function generateAdjectives() {
     const adjective1 = getRandomElement(adjectives);
     const adjective2 = getRandomElement(adjectives);
+    const adjective3 = getRandomElement(adjectives);
+    const adjective4 = getRandomElement(adjectives);
     
-    return [biome, adjective1, adjective2];
+    return [adjective1, adjective2, adjective3, adjective4];
 }
   
   
-export function lorePrompt(height) {
-    let loreData = generateBiomeDescription(height);
+export function adjPrompt() {
+    let loreData = generateAdjectives();
     
-    return `Come up with a lore for a place in 100 words based on these descriptions: 
-    ${loreData[0]}, ${loreData[1]}, ${loreData[2]}`;
+    return `They can be described as: ${loreData[0]}, ${loreData[1]},${loreData[2]},${loreData[3]}`;
 };
   
   

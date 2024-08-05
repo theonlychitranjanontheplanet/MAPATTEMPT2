@@ -1,0 +1,21 @@
+{
+  "name": "mapattempt2",
+  "version": "1.0.0",
+  "description": "mapAttempt2",
+  "main": "index.js",
+  "type":"module",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "openai": "^4.54.0"
+  }
+}

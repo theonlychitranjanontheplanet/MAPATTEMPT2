@@ -55,6 +55,10 @@ export function addToLastMesssage(index, message) {
     chatHistory[index] = array;
 }
 
+export function removeLastMessage(index) {
+    chatHistory[index].pop();
+}
+
 
 export function addToLastFH(message) {
     Fullhistory[Fullhistory.length-1] = Fullhistory[Fullhistory.length-1] + message;

@@ -53,6 +53,8 @@ function addToInventory(text) {
 
 }
 
+addToInventory("Ignore me! :D. Experimental section. Not used because it's a bit too complicated to make this work");
+
 function toggleInventory() {
     //adds 'minimized' class to the inventory content (they already have inventory-content class)
     const isMinimized = inventoryContent.classed("minimized");
@@ -86,6 +88,8 @@ function toggleMagic() {
 };
 
 toggleMagic();
+addToMagic("Fireball: Create a ball of fire. Can shoot it at anything.");
+addToMagic("Iceball: Create a ball of ice. Can shoot it at anything.");
 
 
 
